@@ -1,0 +1,37 @@
+@CHARSET "ISO-8859-1";
+
+#inventory_report {
+	margin: 32px 0 0 32px;
+	background: ghostwhite; 
+	width: 1000px; 
+	padding: 8px;
+	float: left;
+}
+
+#inventory_results {
+	margin: 32px 0 0 32px;
+	
+	padding: 8px;
+	float: left;
+}
+#parts
+{
+	margin: 32px 0 0 32px;
+	padding: 8px;
+	float: left; 
+}
+
+#inventory_table th, td
+{
+	border: 1px solid black;
+	text-align:center;
+	background-color:ghostwhite; 
+	padding: 3px;
+	margin: 15px; 
+}
+
+#inventory_table th
+{
+	background-color:black;
+	color:white;
+}

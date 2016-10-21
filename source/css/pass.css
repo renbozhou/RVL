@@ -1,0 +1,28 @@
+@CHARSET "ISO-8859-1";
+
+#password_wrapper{
+	margin: 26px 0 0 32px;
+	width: 900px; 
+	padding: 8px; 
+	float: left
+}
+
+#cur_pw{
+	font-style: bold; 
+	font-size:25px;	
+	text-indent:30px
+}
+
+#pw_form{
+	margin: 10px;
+	padding: 10px; 
+	border: 2px groove #ffffff;
+	border-radius:7px;
+	width: 250px; 
+
+}
+
+#warn
+{
+	color: red; 
+}

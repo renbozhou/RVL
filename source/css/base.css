@@ -1,0 +1,293 @@
+body {
+	font-family: "Lucida Sans Unicode", "Lucida Grande", Arial, Helvetica sans-serif;
+}
+
+.container {
+	margin: 32px 0 32px 32px;
+	float: left;
+}
+
+hr {
+	border: 0 none;
+	height: 1px;
+	background: #ccc;
+}
+
+h1 {
+	font-size: 20px;
+	font-weight: bold;
+	display: inline;
+}
+
+h3 {
+	margin: 8px 0;
+	display: block;
+	font-size: 16px;
+}
+
+input, select {
+	margin: 2px;
+	display: inline; 
+	
+}
+
+input[type=text], input[type=password] {
+	margin: 2px 0px 2px 0px;	
+	border-radius: 5px; 
+	padding: 5px; 
+	
+}
+
+img#start_rma {
+	margin-bottom: -12px;
+}
+
+img#update_rma {
+	margin-bottom: -8px;
+}
+
+#header {
+	background: url(/images/header.jpg) top left no-repeat;
+	height: 50px;
+}
+
+#head_navigation {
+	list-style: none;
+	text-align: center;
+	height: 30px;
+	width: 900px; 
+	position: relative;
+}
+
+#headmenubar
+{
+	background: #c00 url(/images/nav_bg.jpg) top left no-repeat;
+	width: 100%; 	
+}
+
+#menusearchbar
+{
+	height: 30px;
+	text-align: right;
+	display: inline;  	
+}
+#head_navigation div {
+	display: inline-block;
+	height: 30px;
+}
+#inv_div
+{
+	width: 1000px;
+	float: right;
+	margin-top: 20px;
+	
+}
+#mgr_form{
+	width: 500px; 
+	padding: 5px; 
+	background: ghostwhite; 
+	border: 2px groove #ffffff;
+	border-radius:7px;
+	margin: 32px 5px 10px 10px;
+}
+
+#mgr_res{
+	width: 500px; 
+	padding: 5px; 
+	background: ghostwhite; 
+	border: 2px groove #ffffff;
+	border-radius:7px;
+	margin: 10px;
+}
+#leadtime_div{
+	width: 500px; 
+	padding: 5px; 
+	background: ghostwhite; 
+	border: 2px groove #ffffff;
+	border-radius:7px;
+	margin: 32px;
+	float: left; 
+}
+
+#inv_div td
+{
+	text-align:center;
+}
+
+#head_navigation div a {
+	color: #fff;
+	text-decoration: none;
+	padding: 4px 12px;
+	display: block;
+}
+
+#head_navigation div a:hover {
+	background: #680000;
+}
+
+#panel {
+	font-size: 18px;
+	margin: 32px 0 0 32px;
+	padding: 8px;
+	height: 80%;
+	width: 250px;
+	background: #ededed;
+	border: 2px groove #ffffff;
+	border-radius:7px;
+	float: left;
+}
+
+#panel input { margin: 2px 0; }
+
+#panel img
+{
+	margin: 2px;
+}
+#panel a
+{
+	font-size: 15px; 
+}
+#search_rma_sn {
+	width: 95%;
+}
+
+#picker {
+	margin-bottom: -2px;
+}
+
+.result {
+	margin: 16px 0;
+	background: #ffc;
+	border: 2px groove #ffffff;
+	min-width: 600px;
+	border-radius:7px;
+}
+#mgr_search{
+	float: left; 
+}
+
+
+#resultmenu {
+	margin: 16px 0;
+	background: #FFF; 
+	border: 2px groove #ffffff;
+	min-width: 600px;
+	border-radius:7px;
+}
+#rma_search {
+	margin: 16px 0;
+	background: #FFF; 
+	border: 2px groove #ffffff;
+	min-width: 600px;
+	border-radius:7px;
+}
+
+
+.result {
+	margin: 10px;
+	padding: 5px; 
+}
+.result p {
+	margin: 8px; 
+}
+
+.rma_header {
+	background: #D8EFF5;
+	padding: 8px;
+}
+
+img.ui-datepicker-trigger {
+	margin-bottom: -2px;
+}
+
+a img.icon, .link img.icon { margin-bottom: -2px; }
+
+div.date_label {
+	margin: 4px 0;
+}
+
+#message {
+	padding: 8px 16px;
+	margin: 32px;
+	text-indent:20px;
+}
+
+div.message.delete { background: #fcc; }
+div.message.add { background: #ffc; }
+
+.container a, .link { text-decoration: none; color: #36c; cursor: pointer; }
+.link {
+	-moz-user-select: none;
+	-khtml-user-select: none;
+	-webkit-user-select: none;
+	user-select: none;
+}
+
+.ui-autocomplete {
+	width: 350px;
+}
+.ui-button-text-icon-secondary .ui-button-text, .ui-button-text-icons .ui-button-text {
+    padding: 0.2em 1.8em 0.2em 0.4em;
+}
+#sites {
+	width: 400px;
+	position: absolute;
+	z-index: 100000;
+}
+.dateinput
+{
+	width: 100px; 
+}
+#logindiv {
+	padding: 2px; 
+}
+#li_box
+{
+	margin: 10px; 
+	padding: 5px; 
+	width: 500px; 
+}
+#create_member
+{
+	margin: 10px; 
+	padding: 5px; 
+	width: 500px; 
+}
+#search_results
+{
+	width: 1000px;
+	float: right;
+	margin: 32px 10px;
+	padding: 5px;
+	border: 2px groove #ffffff;
+	border-radius:7px;
+	background: ghostwhite;
+}
+#main
+{
+	width: 1350px;
+}
+#inventory_upload_div {
+	margin: 15px 15px;
+	float: left; 
+}
+#debug_array
+{
+	width: 1000px; 
+}
+.rma_conflict { outline: 2px solid red; }
+
+.rma_hidden
+{
+    visibility: collapse;    
+}
+.error
+{
+	color: red; 
+	
+}
+input.error 
+{
+	background-color: rgb(255, 237, 239);
+	color: black; 
+}

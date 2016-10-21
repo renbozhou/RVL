@@ -1,0 +1,24 @@
+@CHARSET "ISO-8859-1";
+
+#edit_user {
+	margin: 32px 10px;
+	padding: 10px; 
+	float: left; 
+	border: 2px groove #ffffff;
+}
+
+#usr_info{
+	background: blue; 
+	color: ghostwhite; 
+}
+
+#priv_list
+{
+	padding: 10px; 
+	
+}
+#enter
+{
+	margin: 10px; 
+	text-align:center;
+}

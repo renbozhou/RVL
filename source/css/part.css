@@ -1,0 +1,25 @@
+@CHARSET "ISO-8859-1";
+#part_history{
+	width: 500px; 
+	padding: 5px; 
+	background: ghostwhite; 
+	border: 2px groove #ffffff;
+	border-radius:7px;
+	margin: 32px;
+	float: left; 
+}
+
+table, th, td
+{
+	border: 1px solid black;
+	text-align:center;
+	background-color:ghostwhite; 
+	padding: 3px;
+	margin: 15px; 
+}
+
+th
+{
+	background-color:black;
+	color:white;
+}

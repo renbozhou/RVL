@@ -1,0 +1,16 @@
+@CHARSET "ISO-8859-1";
+
+#help_wrap{
+	margin: 26px 0 0 32px;
+	width: 900px; 
+	padding: 8px; 
+	float: left
+}
+
+#help_wrap h3{
+	color: red; 
+	font-size:30px;
+}
+#help_wrap p{
+	text-indent: 20px; 
+}

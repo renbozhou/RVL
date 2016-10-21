@@ -1,0 +1,59 @@
+@CHARSET "ISO-8859-1";
+
+#learning
+{
+	background: ghostwhite; 
+	width: 900px; 
+	float: left; 
+	margin: 32px 0 0 32px; 
+}
+
+#learningheader
+{
+	background: yellow; 
+	margin: 20px; 
+}
+#llheader
+{
+	float: left; 
+	position:relative;
+}
+.llitem
+{
+	width:900px; 
+	height: 20px; 
+	font-family:Arial,Helvetica,sans-serif;
+ 	font-size:10px; 
+ 	float: left; 
+ 	position:relative;
+ 	
+}
+.lldel
+{
+	float: left; 
+	position:relative;
+	
+}
+#admin
+{
+	float: left; 
+}
+.name
+{
+	float: left; 
+	position:relative;
+	width: 290px;
+	height: 20px; 
+	overflow: hidden;
+	margin: 5px; 
+}
+.desc
+{
+	float: left; 
+	position:relative;
+	width: 440px;
+	height: 20px; 
+	overflow: hidden;
+	margin: 5px; 
+}
+
