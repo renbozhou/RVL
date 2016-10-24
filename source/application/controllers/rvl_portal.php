@@ -4,15 +4,15 @@
 *	constructor autochecks the session
 *	
 */
+defined('BASEPATH') OR exit('No direct script access allowed');
 
-    function build_sorter($key) {
-        return function ($a, $b) use ($key) {
-            return strcasecmp($a[$key], $b[$key]);
-        };
-    }
+function build_sorter($key) {
+    return function ($a, $b) use ($key) {
+        return strcasecmp($a[$key], $b[$key]);
+    };
+}
 
-
-class RVL_Portal extends CI_Controller{
+class Rvl_portal extends CI_Controller{
 	
 	function __construct()
 	{
@@ -41,8 +41,7 @@ class RVL_Portal extends CI_Controller{
 	
 	function is_logged_in()
 	{
-		// function to check the session data 
-		
+		// function to check the session data 		
 		$is_logged_in = $this->session->userdata('is_logged_in'); 
 		if (!isset($is_logged_in) || $is_logged_in != true)
 		{

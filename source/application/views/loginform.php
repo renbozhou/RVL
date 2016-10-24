@@ -5,39 +5,27 @@
 *
 */?>
 <script type="text/javascript">
-$().ready(function() {
-
+$(document).ready(function(){
 	$("#loginform").validate();
-	});
+});
 </script>
 
 <div id="logindiv">
 	<h1>Lenovo RVL Portal Access</h1>
+	<div id="li_box">
 	<?php
-		echo ('<div id="li_box">'); 
-		$data = array(
-				'class'          => 'login',
-				'id'   => 'loginform'); 
-		echo form_open('login/checkcred', $data); 
-	
-		
-		echo form_label('Email Address: ', 'email');
-		echo '<br>';
-		echo form_input('email', '', 'required'); 
-		echo '<br>'; 
-		echo form_label('Password: ', 'password');
-		echo '<br>';
-		echo form_password('password','','required'); 
-		echo '<br>';
-		echo form_submit('submit','Login');  
-		echo ('</div>');
+		$data = array('class'=>'login', 'id'=>'loginform');
+		echo form_open('login/checkcred', $data);
+		echo form_label('Email Address: ', 'email').'<br>';
+		echo form_input('email', '', 'required').'<br>'; 
+		echo form_label('Password: ', 'password').'<br>';
+		echo form_password('password','','required').'<br>';
+		echo form_submit('submit','Login');
 	?>
+	</div>
 	<hr>
 	<?php 
-	echo anchor('login/signup', 'Signup', 'id="signuplink"');
-	echo '<br>';
+	echo anchor('login/signup', 'Signup', 'id="signuplink"').'<br>';
 	echo anchor('login/forgot', 'Forgot Password', 'id="forgotpw"'); 
-	
 	?>
-	
 </div>

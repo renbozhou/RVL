@@ -9,6 +9,7 @@ class Login extends CI_Controller{
 	
 	function index()
 	{
+		@session_start();
 		$this->session->sess_destroy();
 		$data['main_content'] = 'loginform'; 
 		$this->load->view('includes/template', $data); 
@@ -17,8 +18,7 @@ class Login extends CI_Controller{
 	function checkcred()
 	{
 		$this->load->model('user_m'); 
-		$check = $this->user_m->valid(); 
-		
+		$check = $this->user_m->valid();		
 		if ($check)
 		{
 			redirect('rvl_portal/home'); 
@@ -87,7 +87,7 @@ class Login extends CI_Controller{
 	
 	function create_member()
 	{
-		$this->load->library('form_validation'); 
+		$this->load->library('form_validation');
 		
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email'); 
 		$this->form_validation->set_rules('pw1', 'Password', 'trim|required|min_length[5]');

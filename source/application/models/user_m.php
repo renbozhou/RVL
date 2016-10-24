@@ -9,10 +9,11 @@ class User_m extends CI_Model {
 			$em=$this->input->post('email');
 			$pw=$this->input->post('password'); 
 		}
-		$this->db->where('email', $em);  
+
+		$this->db->where('email', $em);
 		$this->db->where('password',$pw);
-		$query = $this->db->get('users'); 		 
-		if ($query->num_rows == 1){
+		$query = $this->db->get('users');
+		if ($query->num_rows() == 1){
 			foreach ($query->result() as $row)
 			{
 				$data = array(
@@ -257,12 +258,13 @@ class User_m extends CI_Model {
 				'email' => $this->input->post('email'), 
 				'password' => $this->input->post('pw1')
 				); 
-		$i = $this->db->insert('users', $n);	
-        
-        //now email admins that user was created
-        $admins = $this->get_admin_emails();
-        $this->load->library('email');
-        foreach ($admins as $email)
+		$i = $this->db->insert('users', $n);
+
+        if( false ) {
+	        //now email admins that user was created
+	        $admins = $this->get_admin_emails();
+	        $this->load->library('email');
+	        foreach ($admins as $email)
 			{
 		        $this->email->from('do_not_reply@lenovo.com', 'RVL Do Not Reply');
 		        $this->email->to($email['email']);
@@ -271,13 +273,13 @@ class User_m extends CI_Model {
 		        $this->email->message('New user created on RVL portal: '.$this->input->post('email'));	
 		
 		        $this->email->send();
-                                    
-                //mail($email['email'], 'New user created on RVL portal: '.$this->input->post('email'), 
-                //    'New user created on RVL portal: '.$this->input->post('email').' Please grant appropriate rights.');
+	                                
+	            //mail($email['email'], 'New user created on RVL portal: '.$this->input->post('email'), 
+	            //    'New user created on RVL portal: '.$this->input->post('email').' Please grant appropriate rights.');
 				//below structure adds an element to the array in php
 				//$ct[] = $r['site_id'];
-			}
-        
+			}        	
+        }
 		return $i; 
 	}
 	function check_email($email)
