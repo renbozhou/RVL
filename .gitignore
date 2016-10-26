@@ -3,7 +3,15 @@
 .settings
 .buildpath
 .project
+
+source/.htaccess
 source/application/config/config.php
 source/application/config/constants.php
 source/application/config/database.php
 source/application/config/memcached.php
+
+.htaccess
+application/config/config.php
+application/config/constants.php
+application/config/database.php
+application/config/memcached.php
