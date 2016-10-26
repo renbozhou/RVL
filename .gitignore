@@ -1,0 +1,9 @@
+.idea
+.DS_Store
+.settings
+.buildpath
+.project
+source/application/config/config.php
+source/application/config/constants.php
+source/application/config/database.php
+source/application/config/memcached.php
