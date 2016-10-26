@@ -1,40 +1,48 @@
 <?php
-
+/*
+ * Class Name  : User model
+ * Description : Operating the users table related functions
+ */
 class User_m extends CI_Model {
-	
+	/*
+	 * Desc: 检验users表用户是否存在,如果存在保存到session数据中
+	 */
 	function valid($em = '0', $pw = '0')
 	{
-		if ($em == '0')
-		{
-			$em=$this->input->post('email');
-			$pw=$this->input->post('password'); 
+		if ($em === '0') {
+			$em = $this->input->post('email');
+			$pw = $this->input->post('password'); 
 		}
 
 		$this->db->where('email', $em);
 		$this->db->where('password',$pw);
 		$query = $this->db->get('users');
-		if ($query->num_rows() == 1){
-			foreach ($query->result() as $row)
-			{
-				$data = array(
-						'id' => $row->id,
-						'username' => $row->email,
-						'alias' => $row->alias,
-						'is_logged_in' => true,
-						'tracking_id' => $row->type,
-						'permission' => $row->permission,
-						'use_lc' => $row->use_lc,
-						'use_rma' => $row->use_rma,
-						'site_id' => $row->site_id, 
-						'site' =>  $this->get_site_loc($row->site_id), 
-						'use_admin' => $row->use_admin);					
+		if ($query->num_rows() == 1) {
+			foreach ($query->result() as $row) {
+				$data = [
+					'id' => $row->id,
+					'username' => $row->email,
+					'alias' => $row->alias,
+					'is_logged_in' => true,
+					'tracking_id' => $row->type,
+					'permission' => $row->permission,
+					'use_lc' => $row->use_lc,
+					'use_rma' => $row->use_rma,
+					'site_id' => $row->site_id,
+					'site' =>  $this->get_site_loc($row->site_id),
+					'use_admin' => $row->use_admin,
+				];
 				$this->session->set_userdata($data);
-			}			
+			}
 			return true; 
 		}		
 		return false; 	
 	}
-	function user_permission($id,$data)
+
+	/*
+	 * Desc: 检验users表用户是否存在,如果存在保存到session数据中
+	 */
+	function user_permission($id, $data)
 	{
 		$this->db->update('users', $data, array('id' => $id));
 		return $this->db->affected_rows();
@@ -153,9 +161,8 @@ class User_m extends CI_Model {
 				'section' => $this->input->post('type')); 
 		$i = $this->db->insert('files', $data);
 		return $i;
-		
-		
 	}
+
 	function save_mgr($id,$list)
 	{
 		// destroy all old files
@@ -186,6 +193,7 @@ class User_m extends CI_Model {
 		return $i;
 		
 	}
+
 	function set_alias($id, $alias)
 	{
 		$a = array ('alias' => $alias);
@@ -232,14 +240,14 @@ class User_m extends CI_Model {
 	
 	function remove_learning_name($filename)
 	{
-		
 		$this->db->where('filename', $filename);
 		$this->db->delete('files'); 
 		
 		return true; 
 	}
 	
-    function get_admin_emails() {
+    function get_admin_emails() 
+    {
         $q='select email from users where use_admin = 1;';
 		$query = $this->db->query($q);
         
@@ -251,35 +259,31 @@ class User_m extends CI_Model {
 		// check if email is already in the db
 		$this->db->where('email', $this->input->post('email'));
 		$query = $this->db->get('users');
-		if ($query->num_rows == 1){
+		if ($query->num_rows == 1) {
 			return false; 
 		}
 		$n = array(
-				'email' => $this->input->post('email'), 
-				'password' => $this->input->post('pw1')
-				); 
+			'email' => $this->input->post('email'), 
+			'password' => $this->input->post('pw1')
+		); 
 		$i = $this->db->insert('users', $n);
 
-        if( false ) {
-	        //now email admins that user was created
-	        $admins = $this->get_admin_emails();
-	        $this->load->library('email');
-	        foreach ($admins as $email)
-			{
-		        $this->email->from('do_not_reply@lenovo.com', 'RVL Do Not Reply');
-		        $this->email->to($email['email']);
-		
-		        $this->email->subject('New user created on RVL portal: '.$this->input->post('email'));
-		        $this->email->message('New user created on RVL portal: '.$this->input->post('email'));	
-		
-		        $this->email->send();
-	                                
-	            //mail($email['email'], 'New user created on RVL portal: '.$this->input->post('email'), 
-	            //    'New user created on RVL portal: '.$this->input->post('email').' Please grant appropriate rights.');
-				//below structure adds an element to the array in php
-				//$ct[] = $r['site_id'];
-			}        	
-        }
+        //now email admins that user was created
+        $admins = $this->get_admin_emails();
+        $this->load->library('email');
+        foreach ($admins as $email)
+		{
+	        $this->email->from('do_not_reply@lenovo.com', 'RVL Do Not Reply');
+	        $this->email->to($email['email']);
+	        $this->email->subject('New user created on RVL portal: '.$this->input->post('email'));
+	        $this->email->message('New user created on RVL portal: '.$this->input->post('email'));	
+	        $this->email->send();
+
+            //mail($email['email'], 'New user created on RVL portal: '.$this->input->post('email'), 
+            //    'New user created on RVL portal: '.$this->input->post('email').' Please grant appropriate rights.');
+			//below structure adds an element to the array in php
+			//$ct[] = $r['site_id'];
+		}
 		return $i; 
 	}
 	function check_email($email)
@@ -375,16 +379,14 @@ class User_m extends CI_Model {
 		return $sd;
 		
 	}
-	
+		
 	function change_pw($pw)
 	{
-		
-		$id = $this->session->userdata('id');  
-		$this->db->where('id', $id); 
+		$id = $this->session->userdata('id');
+		$this->db->where('id', $id);
 		$this->db->update('users', $pw);
 		$r = $this->db->affected_rows();
-		return $id; 
-		
+		return $id;
 	}
 
 }

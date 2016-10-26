@@ -904,24 +904,24 @@ class Rvl_portal extends CI_Controller{
 		
 	}
 	
-    function show_create_view_rma_vw() {
-        $qry = "SHOW CREATE VIEW rma_vw";
-        $test = $this->db->query($qry); 
+    // function show_create_view_rma_vw() {
+    //     $qry = "SHOW CREATE VIEW rma_vw";
+    //     $test = $this->db->query($qry); 
         
-        $result = mysql_query($sql);
+    //     $result = mysql_query($sql);
 
-        if (!$result) {
-            echo "DB Error, could not list tables\n";
-            echo 'MySQL Error: ' . mysql_error();
-            exit;
-        }
+    //     if (!$result) {
+    //         echo "DB Error, could not list tables\n";
+    //         echo 'MySQL Error: ' . mysql_error();
+    //         exit;
+    //     }
 
-        while ($row = mysql_fetch_row($result)) {
-            echo "Row: {$row[0]} {$row[1]}\n";
-        }
+    //     while ($row = mysql_fetch_row($result)) {
+    //         echo "Row: {$row[0]} {$row[1]}\n";
+    //     }
 
-        mysql_free_result($result);
-    }
+    //     mysql_free_result($result);
+    // }
     
 	function rma_csv()
 	{

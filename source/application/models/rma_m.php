@@ -251,16 +251,16 @@ class Rma_m extends CI_Model {
 		foreach($q->result_array() as $r)
 		{
 			$ct['results'][] = array (
-					'id' => $r['id'],
-					'iomega_sn' => $r['iomega_sn'],
-					'bare_hdd_sn' => $r['bare_hdd_sn'],
-					'customer_rma_num' => $r['customer_rma_num'],
-					'company_name' => $r['company_name'],
-					'first_name' => $r['first_name'],
-					'last_name' => $r['last_name']);
+				'id' => $r['id'],
+				'iomega_sn' => $r['iomega_sn'],
+				'bare_hdd_sn' => $r['bare_hdd_sn'],
+				'customer_rma_num' => $r['customer_rma_num'],
+				'company_name' => $r['company_name'],
+				'first_name' => $r['first_name'],
+				'last_name' => $r['last_name']
+			);
 		}
 		return $ct;
-		
 	}
     
 	function mgr_rma_all($info, $dateinfo)

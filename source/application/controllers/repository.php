@@ -55,7 +55,7 @@ class Repository extends CI_Controller{
 			die();
 		}
 		unlink('./upload/' .$title);
-		redirect('rvl_portal/learning'); 
+		redirect('rvl_portal/learning');
 	}
 	
 	function model_code()
