@@ -7,6 +7,7 @@
 <script type="text/javascript">
 $(document).ready(function(){
 	$("#loginform").validate();
+	$("#loginform")[0].reset();
 });
 </script>
 

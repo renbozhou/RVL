@@ -1,7 +1,8 @@
 <?php
 class Inv_m extends CI_Model {
 	
-	function save_inv($data){
+	function save_inv($data)
+	{
 		foreach($data as $d)
 		{
 			$this->db->insert('inventory', $d);			
@@ -9,7 +10,6 @@ class Inv_m extends CI_Model {
 			{
 				return 'bad'; 
 			}
-			
 		}
 	}
 	
@@ -27,7 +27,6 @@ class Inv_m extends CI_Model {
 	
 	function lead_time($part, $site, $userId)
 	{
-		
 		$ct = array(); 
 		$st = 'select lead_time from lead_time i join user_sites_vw us on (i.site = us.site_id)  where part_number ="' .$part .'" and site = "' .$site .'" and us.user_id = '.$userId.';';
 		$q = $this->db->query($st);
@@ -68,6 +67,7 @@ class Inv_m extends CI_Model {
 				return $this->db->update('lead_time', $data); 
 			}
 	}
+
 	function part_loc($part, $week)
 	{
 		$st = 'select * from inventory where part_number ="' .$part .'" and week ="' .$week .'";';
@@ -83,7 +83,6 @@ class Inv_m extends CI_Model {
 	{
 		/*
 		 *  Find the listing for a part, order by week (so latest entry is first)
-		 *  
 		 */
 		$st = 'select * from inventory where part_number ="' .$part .'" and site ="' .$site .'" Order by week desc;'; 
 		$q = $this->db->query($st);
@@ -97,31 +96,21 @@ class Inv_m extends CI_Model {
 	function search_inv($loc, $date)
 	{
 		$statement = ''; 
-		if (($loc == ''))
-		{
-			$loc = -1; 
-		}
-		if ($date =='')
-		{
-			$date = '9999-01-01';
-		}
+		empty($loc) && $loc = -1;
+		empty($date) && $date = '9999-01-01';
+
 		$ct = array();
 		$id = $this->session->userdata('id');
-		if ($loc == -1){
-			$statement = 'select site, part_number, quantity, location from inventory i join user_sites_vw us on (i.site = us.site_id) where week = "' .$date .'" and us.user_id = '.$id.';';
-			
-		}else {
-		$statement = 'select site, part_number, quantity, location from inventory  i join user_sites_vw us on (i.site = us.site_id)  where site = ' .$loc .' and week = "' .$date .'" and us.user_id = '.$id.';';
-		} 
+
+		$statement = ($loc == -1) ?
+			('select site, part_number, quantity, location from inventory i join user_sites_vw us on (i.site = us.site_id) where week = "' .$date .'" and us.user_id = '.$id.';') :
+			('select site, part_number, quantity, location from inventory  i join user_sites_vw us on (i.site = us.site_id)  where site = ' .$loc .' and week = "' .$date .'" and us.user_id = '.$id.';') ;
 
 		$q = $this->db->query($statement);
-		foreach($q->result_array() as $r)
-		{
+		foreach($q->result_array() as $r) {
 			$ct[] = $r;
 		}
-        
 		return $ct;
-		
 	}
 	
 	function csv_inv()
@@ -133,7 +122,7 @@ class Inv_m extends CI_Model {
 		return $this->dbutil->csv_from_result($query);
 	}
 	
-	function parts($site = null){
+	function parts($site = null) {
 		
 		$ct = array();
 		// get all parts if null, if not only parts associated with the site		
@@ -156,16 +145,13 @@ class Inv_m extends CI_Model {
 		
 	}
 	
-	function get_location($location){
+	function get_location($location)
+	{
 		$ct = array(); 
-		$q = $this->db->query('select * from sites where description like '."'%" .$location ."%';");
-		
-		foreach($q->result_array() as $r)
-			{
-				$ct[] = $r;
-			}
-		
-		return $ct; 
+		$q = $this->db->query('select * from sites where description like '."'%" .$location ."%';");	
+		foreach($q->result_array() as $r) {
+			$ct[] = $r;
 		}
-	
+		return $ct; 
+	}
 }

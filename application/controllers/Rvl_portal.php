@@ -6,52 +6,32 @@
 */
 defined('BASEPATH') OR exit('No direct script access allowed');
 
-function build_sorter($key) {
-    return function ($a, $b) use ($key) {
-        return strcasecmp($a[$key], $b[$key]);
-    };
-}
-
-class Rvl_portal extends CI_Controller{
-	
-	function __construct()
+class Rvl_portal extends MY_Controller
+{
+	public function __construct()
 	{
 		// check if the user is logged on for every action
 		parent::__construct(); 
 		date_default_timezone_set("GMT");
-		$this->is_logged_in(); 
+		$this->is_logged_in();
 		
 	}
 	
-	function index()
+	public function index()
 	{
 		/// same as home but need index for default rvl_portal access
-		$this->home(); 
-		
+		$this->home();
 	}
 	
-	function home($message = null)
+	public function home($message = null)
 	{
 		// landing page with a message for the user (if needed)
 		$data['data']['message'] = $message; 
 		$data['main_content'] = 'home';
 		$this->load->view('includes/template', $data);
-	
 	}
-	
-	function is_logged_in()
-	{
-		// function to check the session data 		
-		$is_logged_in = $this->session->userdata('is_logged_in'); 
-		if (!isset($is_logged_in) || $is_logged_in != true)
-		{
-			redirect('login/index');  
-			die(); 
-		}
 		
-	}
-	
-	function password_reset()
+	public function password_reset()
 	{
 		$id = $this->session->userdata('id'); 
 		$this->load->model('user_m');
@@ -59,7 +39,8 @@ class Rvl_portal extends CI_Controller{
 		$data['main_content'] = 'password_reset';
 		$this->load->view('includes/template', $data);
 	}
-	function help()
+
+	public function help()
 	{
 		$data['main_content'] = 'help';
 		$this->load->view('includes/template', $data);
@@ -91,7 +72,7 @@ class Rvl_portal extends CI_Controller{
 		}
 		
 		$modified = date('Y-m-d');
-		$id = $this->input->post('rma_id'); 
+		$id = (int)$this->input->post('rma_id'); 
 		{
 			$rma = array(
 					'receipt_date' => $return_date,
@@ -139,7 +120,7 @@ class Rvl_portal extends CI_Controller{
 		$this->load->model('rma_m');
 		if ($this->rma_m->update_rma($id, $rma))
 		{
-			if(isset($_POST['cloan']))
+			if( $this->input->post('cloan') )
 			{
 				$c['rma_number'] = $rma['customer_rma_num'];
 				$c['company_name']= $rma['company_name'];
@@ -181,14 +162,11 @@ class Rvl_portal extends CI_Controller{
 			$return_date = null;
 		}
 		
-		
 		$screen_date =  $this->input->post('screen_date');
 		if ($screen_date == '0000-00-00' || $screen_date == '' )
 		{
 			$screen_date = null;
 		}
-		
-		
 		
 		$created = date('Y-m-d'); 
 		
@@ -244,24 +222,19 @@ class Rvl_portal extends CI_Controller{
 			$this->load->model('rma_m');
 			if ($this->rma_m->set_rma($rma))
 			{
-				if(isset($_POST['cloan']))
-				{ 	
-					$c['rma_number'] = $rma['customer_rma_num']; 
-					$c['company_name']= $rma['company_name']; 
-					$c['first_name']= $rma['first_name']; 
-					$c['last_name']= $rma['last_name']; 
-					$c['customer_type']= $rma['customer_type']; 
-					$c['rma_type']= $rma['rma_type']; 
-					
-					$this->copy_rma($c); 
-						
-				
-				}
-				else {
+				if( $this->input->post('cloan') )
+				{
+					$c['rma_number'] = $rma['customer_rma_num'];
+					$c['company_name']= $rma['company_name'];
+					$c['first_name']= $rma['first_name'];
+					$c['last_name']= $rma['last_name'];
+					$c['customer_type']= $rma['customer_type'];
+					$c['rma_type']= $rma['rma_type'];
+					$this->copy_rma($c);
+				} else {
 					$this->home('New RMA Created');
 				}
-				
-			}else {
+			} else {
 				$this->home('Error in Creating RMA'); 
 			} 
 		}
@@ -284,7 +257,6 @@ class Rvl_portal extends CI_Controller{
 		
 		$data['values']['customer_rma_num'] = $info['rma_number']; 
 		
-
 		$data['values']['company_name'] = $info['company_name'];
 		$data['values']['first_name'] = $info['first_name']; 
 		$data['values']['last_name'] = $info['last_name']; 
@@ -312,15 +284,13 @@ class Rvl_portal extends CI_Controller{
 		
 		$this->load->model('rma_m');
 		$this->load->model('user_m');
-		if ($id == null){
+		if ($id == null) {
 			$id = "new";
 			$t = 'Create New RMA'; 
 			$data['values'] =  $this->rma_m->blank_rma(); 
 			$data['new'] = true; 
 			$data['id'] = 0;
-		}
-		else 
-		{
+		} else {
 			
 			$data['values'] = $this->rma_m->get_single_rma($id);
 			$data['new'] = false; 
@@ -335,27 +305,25 @@ class Rvl_portal extends CI_Controller{
 			
  		}
 		
+		$data['customertype'] = $this->rma_m->get_customer_type();
+		$data['producttype'] = $this->rma_m->get_product_type();
+		$data['facodes'] = $this->rma_m->get_fa_codes();
+		$data['rmastatus'] = $this->rma_m->get_rma_status_id();
+		$data['suppliers'] = $this->rma_m->get_suppliers();
+		$data['title'] = $t;
 		
-			$data['customertype'] = $this->rma_m->get_customer_type();
-			$data['producttype'] = $this->rma_m->get_product_type();
-			$data['facodes'] = $this->rma_m->get_fa_codes();
-			$data['rmastatus'] = $this->rma_m->get_rma_status_id();
-			$data['suppliers'] = $this->rma_m->get_suppliers();
-			$data['title'] = $t;
-			
-			$data['id'] = $id; 
-			$s['data']=$data;
-			$s['data']['all_sites'] = $this->user_m->get_all_sites();
-			$s['main_content']='single_edit';
-			$this->load->view('includes/template', $s);		
-				
+		$data['id'] = $id;
+		$s['data'] = $data;
+		$s['data']['all_sites'] = $this->user_m->get_all_sites();
+		$s['main_content'] = 'single_edit';
+		$this->load->view('includes/template', $s);
 	}
 	
 	function search()
 	{	// get rma's by the rma_number
 		$this->load->model('rma_m');
-		$data = $this->rma_m->rma_by_rma_or_serial_nbr($this->input->post('stext')); //rma_by_rmanumber
-		$s['data'] = $data; 
+		$data = $this->rma_m->rma_by_rma_or_serial_nbr($this->input->post('stext',true)); //rma_by_rmanumber
+		$s['data'] = $data;
 		//search for RVL
 		$s['main_content']='search_results';
 		$this->load->view('includes/template', $s);
@@ -380,7 +348,7 @@ class Rvl_portal extends CI_Controller{
 		if ($this->session->userdata('use_admin') == 0)
 		{
 			$this->home(); 
-			die(); 
+			die();
 		} 
 		//get list of users
 		$this->load->model('user_m');		
@@ -430,19 +398,14 @@ class Rvl_portal extends CI_Controller{
 			$this->home("No permissions to update sites."); 
 			die(); 
 		} 
-		//save an already existing site from the id; 
-
-		$id = $this->input->post('id');
+		//save an already existing site from the id;
+		$id = (int)$this->input->post('id');
         $code = $this->input->post('code');
         $description = $this->input->post('description');
         
-		{
-			$site = array(
-					'code' => $code,
-					'description' => $description);
-		}
 		$this->load->model('site_m');
-        
+        $site = array( 'code' => $code, 'description' => $description);
+
         //determine if update or insert, then invoke appropriate database save
         if($id == "-1") {
             if ($this->site_m->set_site($site))
@@ -468,37 +431,23 @@ class Rvl_portal extends CI_Controller{
 	{
 		// admin user page function to update user's privlages
 		$rma = $inv = $lc = $adm = 0; 
-		$id = $_POST['id']; 
-		$site = $_POST['site'];
-		if (isset ($_POST['rma']))
-		{
-			$rma = 1;	
-		}
-		if (isset ($_POST['inv']))
-		{ 
-			$inv = 1;
-		}
-		if (isset ($_POST['lc']))
-		{ 
-			$lc = 1;
-		} 
-		if (isset ($_POST['adm']))
-		{ 
-			$adm = 1;
-		}
-		//print_r($_POST); 
-		//echo '::' . $rma . $inv . $lc . $adm;
+		$id = (int)$this->input->post('id');
+		$site = (int)$this->input->post('site');
+
+		$this->input->post('rma') && $rma = 1;
+		$this->input->post('inv') && $inv = 1;
+		$this->input->post('lc')  && $lc  = 1;
+		$this->input->post('adm') && $adm = 1;
+
 		$per = array('use_rma'=> $rma,'permission'=> $inv,'use_lc'=> $lc,'use_admin'=> $adm, 'site_id' => $site);
 		$this->load->model('user_m');
-		$this->user_m->user_permission($id,$per);
+		$this->user_m->user_permission($id, $per);
 		$mgr = '0'; 
-		if ($site == '0')
-		{
-			foreach ($_POST as $key => $value)
-				if (is_numeric($key))
-					$mgr .=  ',' .$key ; 
-			
-			$this->user_m->save_mgr($id,$mgr); 
+		if ($site == '0') {
+			foreach ($_POST as $key => $value) {
+				is_numeric($key) && $mgr .=  ',' .$key;
+			}
+			$this->user_m->save_mgr($id,$mgr);
 		}
 		$this->adminpage(0);
 	}
@@ -512,7 +461,6 @@ class Rvl_portal extends CI_Controller{
 			die();
 		}
 		
-		
 		$this->load->model('user_m');
 		$s['data'] = $this->user_m->user_info($id); 
 		$s['data']['id'] = $id;
@@ -525,19 +473,19 @@ class Rvl_portal extends CI_Controller{
 	function userpage()
 	{
 		// user access to user information
-		$this->load->model('user_m');  
+		$this->load->model('user_m');
 		
 		$id = $this->session->userdata('id'); 
 		// get user info
 		// send to view 
-		$s['data'] = $this->user_m->user_info($id);	
+		$s['data'] = $this->user_m->user_info($id);
 		if ($s['data']['user']['site'] == 0)
 		{
-			$s['data']['mgr'] = $this->user_m->get_mgr($id);	
+			$s['data']['mgr'] = $this->user_m->get_mgr($id);
 		}
-		$s['data']['all_sites'] = $this->user_m->get_all_sites(); 
+		$s['data']['all_sites'] = $this->user_m->get_all_sites();
 		$s['main_content'] = 'userpage';
-		$this->load->view('includes/template', $s);	
+		$this->load->view('includes/template', $s);
 	}
     
     function editsite($id)
@@ -565,11 +513,10 @@ class Rvl_portal extends CI_Controller{
 	{
 		// Get the data
 		$id = $this->session->userdata('id'); 
-		$alias = $this->input->post('alias'); 
+		$alias = $this->input->post('alias', true); 
 		
 		// load into model
 		$this->load->model('user_m');
-		
 		
 		if ($this->user_m->set_alias($id, $alias) > 0)
 		{
@@ -580,32 +527,23 @@ class Rvl_portal extends CI_Controller{
 			$this->home('Error Updating Alias');
 		}
 	}
+
 	function learn_admin()
 	{
-        //$test = 'Here I am1';
-        //var_dump($test);     
-
-    
-    // get the posted filename 
-		$fn =  $this->input->post('filename'); 
-//echo $fn; 
-//die;
+		$fn = trim($this->input->post('filename', true)); 
 		$this->load->model('user_m');
-	        
 		// check if the file is in the db 
-		if ($this->user_m->check_learning_name($fn))
-		{
+		if ($this->user_m->check_learning_name($fn)) {
 			$this->user_m->remove_learning_name($fn); 
 		}
-		// diplay the form 
-		$this->learning(); 
-		
+		// diplay the form
+		$this->learning();
 	}
 	
 	function learn_new()
 	{
 		// get the posted filename
-		$s['data']['filename'] =  $this->input->post('filename');
+		$s['data']['filename'] =  $this->input->post('filename', true);
 		// load the form
 		$s['main_content'] = 'learn_create';
 		$this->load->view('includes/template', $s);
@@ -615,11 +553,10 @@ class Rvl_portal extends CI_Controller{
 	{
 		// save the data
 		$this->load->model('user_m');
-		$this->user_m->savelc(); 		
-		
-		$this->learning(); 
+		$this->user_m->savelc();
+		$this->learning();
 	}
-         
+
 	function learning()
 	{
 		// learning center 
@@ -627,20 +564,15 @@ class Rvl_portal extends CI_Controller{
 		$this->load->model('user_m');
 		$lcdb = $this->user_m->get_learning(); 
 				
-		$this->load->helper('file');		
-        
-		// get the filenames from upload folder 
+		$this->load->helper('file');
+		// get the filenames from upload folder
 		$d = get_dir_file_info('upload');
                
-		foreach ($d as $obj)
-		{
-			$filename[] = $obj['name']; 
-            //echo($obj['name'].'<br>');
+		foreach ($d as $obj) {
+			$filename[] = $obj['name'];
 		}        
         uksort($filename, 'strcasecmp');
-
-        //echo($filename[0]);
-        //echo($filename[1]);
+        
 		$badfiles = array(); 
 		$counted = array(); 
 		$list = array();
@@ -670,7 +602,7 @@ class Rvl_portal extends CI_Controller{
 		}
         uksort($counted, 'strcasecmp');
                         
-        usort($list, build_sorter('name'));
+        usort($list, $this->build_sorter('name'));
         
 		$data['filenames'] = $filename; 
 		$data['counted'] = $list; 
@@ -1051,23 +983,21 @@ class Rvl_portal extends CI_Controller{
 		$id = $this->session->userdata('id');
 		$s['data']['mgr_sites'] = $this->user_m->get_my_sites($id);
 		// grab the data from the post 
-		$loc = $this->input->post('location');
+		$loc = $this->input->post('location', true);
 
 		$s['data']['loc'] = $loc;
 		$date = $this->input->post('filedate'); 		
 		// get the data
 		$s['data']['data'] = $this->inv_m->search_inv($loc, $date);
 		
-		$lt=array(); 
+		$lt = array(); 
 		foreach ($s['data']['data'] as $p)
 		{
-			$val = $this->inv_m->lead_time($p['part_number'],$p['site'], $id); 
-			if ($val){
-				$lt[$p['part_number']][$p['site']]=$val; 
-			}
-		} 
-		$s['data']['lt'] = ($lt); 
-		$s['main_content']='inventory_report';		
+			$val = $this->inv_m->lead_time($p['part_number'],$p['site'], $id);
+			($val) && $lt[$p['part_number']][$p['site']]=$val;
+		}
+		$s['data']['lt'] = ($lt);
+		$s['main_content']='inventory_report';
 		$this->load->view('includes/template', $s);
 	}
 	
@@ -1119,18 +1049,10 @@ class Rvl_portal extends CI_Controller{
 	function inventory_details($part = null, $site = null)
 	{
 		// if the part of number is null then populate from the post data
-		
-		if ($part == null)
-		{
-			$part = $this->input->post('part_number');
-		}
-		if ($site == null)
-		{
-			$site = $this->input->post('site');
-		}
-		
+		($part == null) && $part = $this->input->post('part_number');
+		($site == null) && $site = (int)$this->input->post('site');
 		$this->load->model('inv_m');
-		
+
 		$id = $this->session->userdata('id');
 		$s['data']['lt'] = $this->inv_m->lead_time($part, $site, $id);
 		// get the lead time, and all instances of the part in that site 
@@ -1156,11 +1078,9 @@ class Rvl_portal extends CI_Controller{
 		$id = $this->session->userdata('id');
 		$site = $this->input->post('site');
 		$lt = $this->input->post('leadtime');
-		
+
 		// save to database
-		$this->inv_m->set_lt($part, $site, $lt, $id); 
-		
-		
+		$this->inv_m->set_lt($part, $site, $lt, $id);
 		// send back to search inventory 
 		$this->inventory_search(); 
 	}
@@ -1176,16 +1096,15 @@ class Rvl_portal extends CI_Controller{
 		Site will be auto populated when they select to upload the file.
 		Week will be auto populated when they select to upload the file.
 		*/
-		$term = $this->input->post('filedate');
-		$site = $this->input->post('site_id');
+		$term = $this->input->post('filedate', true);
+		$site = (int)$this->input->post('site_id');
 		
 		// check db here
 		$qry = 'select * from inventory where week = "' .$term .'" and site = ' .$site .';'; 
 		$test = $this->db->query($qry); 
 		if ($test->num_rows() > 0)
 		{
-			$this->home('Inventory File Already Exists in the Database for site ' .$site .' and week ' .$term); 
-			
+			$this->home('Inventory File Already Exists in the Database for site ' .$site .' and week ' .$term);
 		}
 		else 
 		{
@@ -1195,13 +1114,11 @@ class Rvl_portal extends CI_Controller{
 
 		$this->load->helper('file');
 		$this->load->library('upload', $config);
-		
 
 		if ( !$this->upload->do_upload())
 		{
 			$error = $this->upload->display_errors();
-			$this->home($error); 
-			//die();
+			$this->home($error);
 		}
 		else
 		{
@@ -1329,7 +1246,7 @@ class Rvl_portal extends CI_Controller{
 		}}
 	}
 	
-	function oracle_code($pn)
+ 	private	function oracle_code($pn)
 	{
 		$conn = oci_connect('RVL_PORTAL', 'portal', 'prod-db-web.iomegacorp.com:1526/WEBPROD');
 		$query = 'select description from cmf_item_master where item_number = :pn';
@@ -1337,7 +1254,12 @@ class Rvl_portal extends CI_Controller{
 		oci_bind_by_name($stid, ':pn', $pn);
 		oci_execute($stid);
 		return oci_fetch_assoc($stid);
-		
+	}
+
+	public function build_sorter($key) {
+	    return function ($a, $b) use ($key) {
+	        return strcasecmp($a[$key], $b[$key]);
+	    };
 	}
 
 }

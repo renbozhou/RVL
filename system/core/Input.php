@@ -196,6 +196,9 @@ class CI_Input {
 		if (isset($array[$index]))
 		{
 			$value = $array[$index];
+			!get_magic_quotes_gpc() && $value = addslashes($value);
+
+
 		}
 		elseif (($count = preg_match_all('/(?:^[^\[]+)|\[[^]]*\]/', $index, $matches)) > 1) // Does the index contain array notation
 		{

@@ -1,6 +1,6 @@
-<?php
-defined('BASEPATH') OR exit('No direct script access allowed');
-?><!DOCTYPE html>
+<?php defined('BASEPATH') OR exit('No direct script access allowed'); ?>
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -16,12 +16,24 @@ code { font-family: Consolas, Monaco, Courier New, Courier, monospace;font-size:
 	padding: 12px 10px 12px 10px; }
 #container { margin: 10px;border: 1px solid #D0D0D0;box-shadow: 0 0 8px #D0D0D0; }
 p {	margin: 12px 15px 12px 15px; }
+span#showTime { color:red; font-weight: bold; font-size: 1.5em; }
 </style>
+<script type="text/javascript">
+	var t=<?php echo $datas['gotime']; ?>; // 设定跳转的时间
+	setInterval("refer()",800); // 启动0.8秒定时
+	function refer() {
+	    if ( (--t) == 0 ) { // 计数器递减
+	        window.location ='<?= $datas['gourl'] ?>'; // 设定跳转的链接地址
+	    }
+	    document.getElementById('showTime').innerHTML = t; // 显示倒计时	    
+	}
+</script>
 </head>
 <body>
 	<div id="container">
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
+		<p>There Are <span id='showTime'><?php echo $datas['gotime']; ?></span> Seconds, Then Return To The Home Page.</p>
 	</div>
 </body>
 </html>
