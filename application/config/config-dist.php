@@ -423,6 +423,11 @@ $config['standardize_newlines'] = FALSE;
 |
 */
 $config['global_xss_filtering'] = TRUE;
+$config['sql_inject_filter_chars'] = array(
+	'show databases', 'show tables', 'create table', 'load_file', 'outfile',
+	'union all','union','select','insert','update','delete','from',
+	"'", "/*", "*", "../", "./", ";"
+);
 
 /*
 |--------------------------------------------------------------------------

@@ -123,8 +123,8 @@ class MY_Input extends CI_Input
 			$value = $array[$index];
 			if( $this->inject === true || !empty($this->inject) )
 			{
-				$pattern = '/show databases|show tables|create table|union all|union|select|insert|from|update|delete|load_file|outfile|\'|\/\*|\*|\.\.\/|\.\/|;/i';
-				$value = preg_replace($pattern, '', $value);
+				$pattern = '/'.addcslashes(implode('|',config_item('sql_inject_filter_chars')),'./\\*\'').'/i';
+				$value = trim(preg_replace($pattern, '', $value));
 			}
 		}
 		elseif (($count = preg_match_all('/(?:^[^\[]+)|\[[^]]*\]/', $index, $matches)) > 1) // Does the index contain array notation
