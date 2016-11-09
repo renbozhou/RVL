@@ -122,7 +122,7 @@ class Login extends CI_Controller
 
 		 	$send_url = base_url('login/password_reset_by_code').'?token='.$token;
 			
-		 	if ( file_exists(APPPATH.'config\email.php') ) 
+		 	if ( file_exists(APPPATH.'config/email.php') )
 		 	{
 				$this->config->load('email', TRUE); 
 				$econfig = $this->config->item('email', 'email');
