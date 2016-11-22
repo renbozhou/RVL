@@ -2,7 +2,7 @@
 
 class Rma_m extends CI_Model {
 	
-	function get_customer_type()
+	public function get_customer_type()
 	{
 		$ct = array(); 	
 		$q = $this->db->query('select * from customer_type'); 
@@ -13,7 +13,7 @@ class Rma_m extends CI_Model {
 		return $ct; 
 	}
 	
-	function get_rma_status_id()
+	public function get_rma_status_id()
 	{
 		$ct = array();
 		$q = $this->db->query('select * from rma_status');
@@ -24,7 +24,7 @@ class Rma_m extends CI_Model {
 		return $ct;
 	}	
 	
-	function get_product_type()
+	public function get_product_type()
 	{
 		$ct = array();
 		$q = $this->db->query('select * from product_type');
@@ -35,32 +35,32 @@ class Rma_m extends CI_Model {
 		return $ct;
 	}
 	
-	function get_fa_codes()
+	public function get_fa_codes()
 	{
 		return array('BADHDD','BOARD','BUTTON','CNECTR','COSMC','CPU','REVERROR','REVNPF','DND','DOA','DOOR','FAN','FAROY','FRAUD','FWM',
 		'LED','NICERR','NOISE','NPF','OTHER','POWSUP','MEMORY','REPEAT','ROBOCODE','SMOKE','SUPPLIER','TESTERROR');
 	}
 	
-	function get_suppliers()
+	public function get_suppliers()
 	{
 		return array('Seagate','Samsung','Hitachi','Toshiba','Western Digital','Argosy',
 		'Goodman','MaPower','Min-Aik','Onnto','USI','Wistron','Pegatron','Alpha');
 	}
 	
-	function set_rma($info)
+	public function set_rma($info)
 	{
 		$this->db->insert('rma', $info);
 		return $this->db->affected_rows(); 
 	}
 	
-	function update_rma($id, $data)
+	public function update_rma($id, $data)
 	{
 		$where = "id = " .$id;
 		$q = $this->db->update_string('rma', $data, $where);
 		return $this->db->query($q); 
 	}
 	
-	function get_single_rma($id)
+	public function get_single_rma($id)
 	{
 		$ct = array();
 		$uid = $this->session->userdata('tracking_id');
@@ -116,7 +116,7 @@ class Rma_m extends CI_Model {
 		return $data;
 	}
 	
-	function blank_rma()
+	public function blank_rma()
 	{
 		$data = array(
 				'receipt_date' => '',
@@ -166,7 +166,7 @@ class Rma_m extends CI_Model {
 		return $data;
 	}
 	
-	function rmas_by_user()
+	public function rmas_by_user()
 	{
 		$ct = array();
 		$uid = $this->session->userdata('tracking_id');
@@ -185,7 +185,7 @@ class Rma_m extends CI_Model {
 		return $ct; 
 	}
 	
-	function rma_by_site($site)
+	public function rma_by_site($site)
 	{
 		$statement ='SELECT * FROM rma WHERE (site_id = "' .$site .'");';
 	
@@ -213,7 +213,7 @@ class Rma_m extends CI_Model {
 		
 	}
 	
-	function rma_by_rmanumber($number)
+	public function rma_by_rmanumber($number)
 	{
 		$ct = array();
 		$site=$this->session->userdata('site_id');
@@ -238,7 +238,7 @@ class Rma_m extends CI_Model {
 		
 	}
 	
-    function rma_by_rma_or_serial_nbr($number)
+    public function rma_by_rma_or_serial_nbr($number)
 	{
 		$ct = array();
 		$site=$this->session->userdata('site_id');
@@ -263,7 +263,7 @@ class Rma_m extends CI_Model {
 		return $ct;
 	}
     
-	function mgr_rma_all($info, $dateinfo)
+	public function mgr_rma_all($info, $dateinfo)
 	{
 		$sites = explode(',',$info); 
 		$statement ='SELECT * FROM rma WHERE ((site_id = "' .$sites[0] .'")';
@@ -307,7 +307,7 @@ class Rma_m extends CI_Model {
 		return $ct;
 	}
 	
-	function mgr_rma_search($info, $dateinfo, $nbr)
+	public function mgr_rma_search($info, $dateinfo, $nbr)
 	{
 		$sites = explode(',',$info);
 		$statement ='SELECT r.*, s.code site_code FROM rma r join sites s on (r.site_id = s.id)  WHERE ((r.site_id = "' .$sites[0] .'")';
@@ -353,7 +353,7 @@ class Rma_m extends CI_Model {
 				return $ct;
 	}    
     
-	function rma_all()
+	public function rma_all()
 	{
 		$ct = array(); 
 		$ct['statement'] = array();
@@ -376,7 +376,7 @@ class Rma_m extends CI_Model {
 		// return everything
 		return $ct;
 	}
-	function rma_created($start_date = null, $end_date = null)
+	public function rma_created($start_date = null, $end_date = null)
 	{
 		// Set the select statement 
 		$site=$this->session->userdata('site_id');        
@@ -419,7 +419,7 @@ class Rma_m extends CI_Model {
 		return $ct;
 	
 	}
-	function mgr_csv($info=null, $dateinfo)
+	public function mgr_csv($info=null, $dateinfo)
 	{		
 		$this->load->dbutil();
         //strip out any extra commas from end
@@ -450,7 +450,7 @@ class Rma_m extends CI_Model {
 		
 	}
 		
-	function csv_rma($q=null)
+	public function csv_rma($q=null)
 	{
 		$this->load->dbutil();
      		
@@ -466,7 +466,7 @@ class Rma_m extends CI_Model {
 	  return $this->dbutil->csv_from_result($qu);
 	}
 	
-	function rma_shipped($start_date = null, $end_date = null)
+	public function rma_shipped($start_date = null, $end_date = null)
 	{
 		$site=$this->session->userdata('site_id');
         $userId = $this->session->userdata('id');
@@ -505,7 +505,7 @@ class Rma_m extends CI_Model {
 	
 	}
 	
-	function rma_rec($start_date = null, $end_date = null)
+	public function rma_rec($start_date = null, $end_date = null)
 	{
 		$site=$this->session->userdata('site_id');
 		$userId = $this->session->userdata('id');

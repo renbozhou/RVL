@@ -257,7 +257,8 @@ class User_m extends CI_Model {
 		// check if email is already in the db
 		$this->db->where('email', $this->input->post('email'));
 		$query = $this->db->get('users');
-		if ($query->num_rows == 1) {
+		$exists = count($query->result()) ? true : false;
+		if ( $exists === true ) {
 			return false; 
 		}
 		
