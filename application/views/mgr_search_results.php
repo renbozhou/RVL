@@ -40,10 +40,10 @@ echo form_close();
 <h1>Results from last search:</h1> <hr>
 <h3>Sites :</h3><?php
 $m_s = explode(',',$searched_sites); 
-foreach ($m_s as $i)
-{
-	if (!empty($i))
+foreach ($m_s as $i) {
+	if (!empty($i)) {
 		echo $site[$i]['desc'] .'<br>';
+	}
 }?>
 <hr>
 <h3>Count : <?php echo count($list['results']); ?></h3>
@@ -61,19 +61,23 @@ if (!empty ($dateinfo)){
 </div><hr>
 <div class="results" id="resultlist">
 <?php
-
 foreach ($list['results'] as $r)
 {
 	echo '<div class="result"><div class="rma_header">';
 	echo anchor('rvl_portal/edit/' . $r['id'], 'RMA #: '. $r['customer_rma_num'], 'title="Edit RMA"' );
-	if ($r['iomega_sn'] != '')
-		echo "  Unit S/N: " .$r['iomega_sn'] .'<br> </div>';
-	else
-		echo "  Raw S/N: " .$r['bare_hdd_sn'] .'<br> </div>';
-	echo 'Site: ' . $site[$r['site_id']]['desc'] . '<br>';
-	echo 'Company Name: ' . $r['company_name'] . '<br>';
-	echo 'First Name: ' . $r['first_name'] .'<br>';
-	echo 'Last Name: ' . $r['last_name'] . '<br> </div>' ;
+	if ($r['iomega_sn'] != ''){
+		echo "  Unit S/N: " . (!empty($r['iomega_sn']) ? $r['iomega_sn'] : '') .'<br> </div>';
+	} else {
+		echo "  Raw S/N: " . (!empty($r['bare_hdd_sn']) ? $r['bare_hdd_sn'] : '') .'<br> </div>';
+	}
+	if ( isset( $site[$r['site_id']]['desc'] ) ) {
+		echo 'Site: ' . $site[$r['site_id']]['desc'] . '<br>';
+	} else {
+		echo 'Site: <br>';
+	}
+	echo 'Company Name: ' . (!empty($r['company_name']) ? $r['company_name'] : ''). '<br>';
+	echo 'First Name: ' . (!empty($r['first_name']) ? $r['first_name'] : '') .'<br>';
+	echo 'Last Name: ' . (!empty($r['last_name']) ? $r['last_name'] : '') . '<br> </div>' ;
 }
 
 //print_r($data); 

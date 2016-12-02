@@ -78,6 +78,7 @@ class User_m extends CI_Model {
 	public function get_my_sites($userid)
 	{
 		$q = $this->db->query('select s.* from sites s join user_sites_vw us on (s.id = us.site_id) where s.id != 0 and us.user_id = '.$userid);
+		$m = []; 
 		foreach ($q->result_array() as $row)
 		{
 			$m[]= array(
@@ -195,10 +196,9 @@ class User_m extends CI_Model {
 	public function set_alias($id, $alias)
 	{
 		$a = array ('alias' => $alias);
-		$this->db->where('id', $id); 
+		$this->db->where('id', $id);
 		$this->db->update('users', $a);
 		return $this->db->affected_rows();
-		
 	}
 	
 	public function get_mgr($id)

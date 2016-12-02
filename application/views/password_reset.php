@@ -2,8 +2,6 @@
 <script type="text/javascript" src="/js/pass.js"></script>
 
 <div id="password_wrapper">
-<h1>Current Password</h1><br />
-<div id="cur_pw"><?php echo $data; ?></div><br />
 <div id="pw_form">
 	<h1>New Password</h1><br />
 	<?php

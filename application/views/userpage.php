@@ -6,9 +6,12 @@
 */
 
 $admin = $this->session->userdata('use_admin');
-$s = array(); 
+$s = array();
 foreach ($all_sites as $val) {
-	$s[$val['id']] = $val['description']; 
+	if( isset($val['description']) && isset($val['id']) ) 
+	{
+		$s[$val['id']] = $val['description'];
+	}
 }
 ?>
 <script type="text/javascript" src="/js/user.js"></script>
@@ -20,15 +23,14 @@ foreach ($all_sites as $val) {
 		<div>
 			<h1>Alias</h1>
 			<?php
-			echo form_open('rvl_portal/set_alias'); 
-			$value = array(
-					'name'        => 'alias',
-					'id'          => 'alias',
-					'value'       => $user['alias']
-			);
-
-			echo form_input($value);
-			echo form_submit('alais_btn', 'Change');
+				echo form_open('rvl_portal/set_alias'); 
+				$value = array(
+					'name' => 'alias',
+					'id' => 'alias',
+					'value' => $user['alias']
+				);
+				echo form_input($value);
+				echo form_submit('alais_btn', 'Change');
 			?>
 			<br><h1>Email :</h1> <?php echo $user['email'];?><br>	  
 			<h1>User #</h1> <?php echo $user['tracking_id'];?><br>
@@ -45,14 +47,19 @@ foreach ($all_sites as $val) {
 		<div>
 			<input id="site_val" name="site_val" type="hidden" value="<?php echo $user['site'];?>" />
 			<h1>Site:</h1>
-			<?php echo $user['site_info']['code'];?><br>
+			<?php 
+				echo isset($user['site_info']['code']) ? $user['site_info']['code'] : ''; 
+			?>
+			<br>
 			<h1>Site Description: </h1>
 			<div id="sitedes">
 			<?php
 				if ( !empty($mgr) ) {
 					$my_sites = explode(',' , $mgr);
 					if (is_array($my_sites) && !empty($my_sites)) {
-						foreach($my_sites as $val) { echo $s[$val] . '<br>'; }
+						foreach($my_sites as $val) {
+							echo ( isset($s[$val]) ? $s[$val] : '') . '<br>';
+						}
 					}
 				} else {
 					echo $user['site_info']['description'];
@@ -63,4 +70,8 @@ foreach ($all_sites as $val) {
 	</div>
 	</form>
 </div>
-<script> $(function (){ $("#accordion").accordion({ icons: false}); }); </script>
+<script> 
+$(function (){ 
+	$("#accordion").accordion({ icons: false}); 
+});
+</script>

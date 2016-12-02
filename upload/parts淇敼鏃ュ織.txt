@@ -1,0 +1,92 @@
+====================================================
+part发货扫imei规则
+array(11) {
+  ["id"]=>
+  NULL
+  ["content_id"]=>
+  int(12)
+  ["pn"]=>
+  string(10) "5B28C05250"
+  ["shiped_imei"]=>
+  NULL
+  ["shiped_imei2"]=>
+  NULL
+  ["shiped_sn"]=>
+  NULL
+  ["received_imei"]=>
+  NULL
+  ["received_imei2"]=>
+  NULL
+  ["received_sn"]=>
+  NULL
+  ["created_at"]=>
+  NULL
+  ["updated_at"]=>
+  NULL
+}
+
+array(4) {
+
+  ["PartOrderContentImei"]=>
+  array(3) {
+    ["shiped_imei"]=>
+    string(0) ""
+    ["shiped_imei2"]=>
+    string(0) ""
+    ["shiped_sn"]=>
+    string(0) ""
+  }
+}
+
+
+1、如果在发货的时候，已经把imei填写了
+
+part_order_content_imeis：
+1）如果imei规则正确, 但是PHONE接口没有
+shiped_imei
+2）如果imei规则正确, PHONE有的话
+shiped_imei | shiped_sn
+shiped_imei | shiped_imei2 | shiped_sn
+
+3）如果imei规则不正确
+数据不记录
+
+2、如果收货的时候
+1-1 
+received_imei
+
+1-2
+received_imei | received_sn
+received_imei | received_imei2 | received_sn
+
+1-3
+数据不记录
+
+=======================================================
+part_order
+
+part_shipping_instructions
+	增加状态
+	
+part_delivery_notes
+	ship_id
+	增加状态
+
+part_order_contents
+	ship_id
+	note_id
+
+part_order_times | part_order_operate_logs
+	oid->tid
+	type
+
+part_repository
+	scrap
+	transit_scrap
+	book_count
+	buffer
+	price
+	currency
+	
+part_repository_imeis
+    status

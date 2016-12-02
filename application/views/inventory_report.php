@@ -12,11 +12,14 @@
  */
 
 $sites = array();
-foreach ($mgr_sites as $s) // ($all_sites as $s)
-{
-  //echo $s['description'];
-	$sites[$s['id']] = $s['description'];
+if( !empty($mgr_sites) ) {
+	foreach ($mgr_sites as $s) // ($all_sites as $s)
+	{
+	  //echo $s['description'];
+		$sites[$s['id']] = $s['description'];
+	}
 }
+
 ?>
 	<link href="/css/inventory.css" rel="stylesheet" type="text/css" />
 	<script type="text/javascript" src="/js/functions.js"></script>
@@ -29,13 +32,16 @@ foreach ($mgr_sites as $s) // ($all_sites as $s)
 	<?php 
 		//foreach ($all_sites as $site){
     $select = "";
-    foreach ($mgr_sites as $site){
-     if($site['id'] == $loc)
-        $select = " selected ";
-     else
-        $select = "";
-			echo '<option value ="' .$site['id'] .'" '.$select.'>'.$site['code'] .'</option>'; 
+    if( !empty($mgr_sites) ) {
+	    foreach ($mgr_sites as $site){
+	     if($site['id'] == $loc)
+	        $select = " selected ";
+	     else
+	        $select = "";
+				echo '<option value ="' .$site['id'] .'" '.$select.'>'.$site['code'] .'</option>'; 
 		} 
+    }
+
 	?></select>
 </div>
 <div>

@@ -46,7 +46,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $data);
 	}
 	
-	function update_rma()
+	public function update_rma()
 	{
 		// save an already existing rma from the rma_id; 
 
@@ -144,7 +144,7 @@ class Rvl_portal extends MY_Controller
 		
 	}
 	
-	function save_new_rma() 
+	public function save_new_rma() 
 	{
 		//save the data from the RVL form
 		
@@ -241,7 +241,7 @@ class Rvl_portal extends MY_Controller
 				
 	}
 
-	function copy_rma($info)
+	public function copy_rma($info)
 	{
 		/*
 		 *  used for save and clone function 
@@ -278,7 +278,7 @@ class Rvl_portal extends MY_Controller
 		
 	}
 	
-	function edit($id = null)
+	public function edit($id = null)
 	{
 		// Single edit screen *based on ID of rma
 		
@@ -319,7 +319,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
 	
-	function search()
+	public function search()
 	{	// get rma's by the rma_number
 		$this->load->model('rma_m');
 		$data = $this->rma_m->rma_by_rma_or_serial_nbr($this->input->post('stext',true)); //rma_by_rmanumber
@@ -342,7 +342,7 @@ class Rvl_portal extends MY_Controller
 	}
 	*/
     
-	function adminpage($val=0)
+	public function adminpage($val=0)
 	{
 		//check permissions 
 		if ($this->session->userdata('use_admin') == 0)
@@ -370,7 +370,7 @@ class Rvl_portal extends MY_Controller
 		//push list to view
 	}
 	
-    function sitepage($val=0)
+    public function sitepage($val=0)
 	{
 		//check permissions 
 		if ($this->session->userdata('use_admin') == 0)
@@ -390,7 +390,7 @@ class Rvl_portal extends MY_Controller
 		//push list to view
 	}
     
-    function update_site()
+    public function update_site()
 	{
         //check permissions 
 		if ($this->session->userdata('use_admin') == 0)
@@ -427,7 +427,7 @@ class Rvl_portal extends MY_Controller
 		
 	}
     
-	function addprivs()
+	public function addprivs()
 	{
 		// admin user page function to update user's privlages
 		$rma = $inv = $lc = $adm = 0; 
@@ -452,7 +452,7 @@ class Rvl_portal extends MY_Controller
 		$this->adminpage(0);
 	}
 	
-	function edituser($id)
+	public function edituser($id)
 	{
 		// admin access to edit a user
 		if ($this->session->userdata('use_admin') == 0)
@@ -470,7 +470,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
 	
-	function userpage()
+	public function userpage()
 	{
 		// user access to user information
 		$this->load->model('user_m');
@@ -488,7 +488,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
     
-    function editsite($id)
+    public function editsite($id)
 	{
 		// admin access to edit a user
 		if ($this->session->userdata('use_admin') == 0)
@@ -509,7 +509,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
         
-	function set_alias()
+	public function set_alias()
 	{
 		// Get the data
 		$id = $this->session->userdata('id'); 
@@ -528,7 +528,7 @@ class Rvl_portal extends MY_Controller
 		}
 	}
 
-	function learn_admin()
+	public function learn_admin()
 	{
 		$fn = trim($this->input->post('filename', true)); 
 		$this->load->model('user_m');
@@ -540,7 +540,7 @@ class Rvl_portal extends MY_Controller
 		$this->learning();
 	}
 	
-	function learn_new()
+	public function learn_new()
 	{
 		// get the posted filename
 		$s['data']['filename'] =  $this->input->post('filename', true);
@@ -549,7 +549,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
 	
-	function learn_save()
+	public function learn_save()
 	{
 		// save the data
 		$this->load->model('user_m');
@@ -557,25 +557,26 @@ class Rvl_portal extends MY_Controller
 		$this->learning();
 	}
 
-	function learning()
+	public function learning()
 	{
 		// learning center 
-		$filename = array(); 
+		$filename = array();
+		$badfiles = array(); 
+		$counted = array(); 
+		$list = array();
+
 		$this->load->model('user_m');
 		$lcdb = $this->user_m->get_learning(); 
 				
 		$this->load->helper('file');
 		// get the filenames from upload folder
 		$d = get_dir_file_info('upload');
-               
-		foreach ($d as $obj) {
-			$filename[] = $obj['name'];
-		}        
-        uksort($filename, 'strcasecmp');
-        
-		$badfiles = array(); 
-		$counted = array(); 
-		$list = array();
+		if( !empty($d) ) {
+			foreach ($d as $obj) {
+				$filename[] = $obj['name'];
+			}
+			uksort($filename, 'strcasecmp');
+		}
 		// check all the db files are included)
 		foreach ($lcdb as $obj) // get row information
 		{
@@ -601,9 +602,8 @@ class Rvl_portal extends MY_Controller
 			
 		}
         uksort($counted, 'strcasecmp');
-                        
         usort($list, $this->build_sorter('name'));
-        
+
 		$data['filenames'] = $filename; 
 		$data['counted'] = $list; 
 		$data['badfiles'] = $badfiles;//sortmulti ($badfiles, 'name', 'asc'); //quickSortMultiDimensional($badfiles, 'name');//$badfiles; 		
@@ -617,7 +617,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
 	
-	function myrmas()
+	public function myrmas()
 	{	
 		/// grab rma's depending on user's site 
 		$this->load->model('rma_m');
@@ -636,7 +636,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
 	
-	function filtersearch($id='null')
+	public function filtersearch($id='null')
 	{
 		$this->load->model('rma_m');
 		$sb = $this->input->post('filter');
@@ -668,13 +668,13 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
 	
-	function mgr_rma_search()
+	public function mgr_rma_search()
 	{
 		// check if the manager is logged in
 		if ($this->session->userdata('use_admin') == 0)
 		{
 			$this->home(); 
-			die(); 
+			//die();
 		}
 		
 		$this->load->model('user_m');
@@ -765,7 +765,7 @@ class Rvl_portal extends MY_Controller
 		
 	}
 	
-	function upload()
+	public function upload()
 	{
 		$this->load->model('user_m');
 		$s['main_content']='upload';
@@ -788,7 +788,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
 	
-	function save_inv()
+	public function save_inv()
 	{
 		// get contents from stream, put in db, send home
 		$tmp = json_decode($this->input->post('data')); 
@@ -813,7 +813,7 @@ class Rvl_portal extends MY_Controller
 		
 	}
 	
-	function inventory_report()
+	public function inventory_report()
 	{
 		$this->load->model('user_m');
 		$s['data']['lt'] = array(); 
@@ -827,7 +827,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
 	
-	function inventory_csv()
+	public function inventory_csv()
 	{
 		$this->load->model('inv_m');
 		$data = $this->inv_m->csv_inv(); 
@@ -855,7 +855,7 @@ class Rvl_portal extends MY_Controller
     //     mysql_free_result($result);
     // }
     
-	function rma_csv()
+	public function rma_csv()
 	{
         //$this->show_create_view_rma_vw();
         //return;
@@ -962,7 +962,7 @@ class Rvl_portal extends MY_Controller
 	}
     
     
-	function inventory_part($id=null)
+	public function inventory_part($id=null)
 	{
 		if ($id==null){
 			$id = 0; 
@@ -975,7 +975,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
 	
-	function inventory_search ()
+	public function inventory_search ()
 	{
 		$this->load->model('user_m');
 		$this->load->model('inv_m');
@@ -1001,7 +1001,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
 	
-	function inventory_history($part = 0, $site = 0)
+	public function inventory_history($part = 0, $site = 0)
 	{
 		/*
 		 * Single inventory part history and location finder
@@ -1020,13 +1020,13 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 		
 	}
-	
-	function learn_upload(){
+
 	/*
 	 * Learning uploader for the learning center (limited on size and type)
 	 * 
 	 */
-
+	public function learn_upload()
+	{
 		$config['upload_path'] = './upload/';
 		$config['allowed_types'] = 'gif|jpg|png|txt|csv';
 		$config['max_size']	= '1000';
@@ -1040,13 +1040,12 @@ class Rvl_portal extends MY_Controller
 			
 			$this->home('Can not open file');
 			
-		}
-		else {
+		} else {
 			$this->learning(); 
 		}
 	}
 
-	function inventory_details($part = null, $site = null)
+	public function inventory_details($part = null, $site = null)
 	{
 		// if the part of number is null then populate from the post data
 		($part == null) && $part = $this->input->post('part_number');
@@ -1058,7 +1057,7 @@ class Rvl_portal extends MY_Controller
 		// get the lead time, and all instances of the part in that site 
 	}
 	
-	function lead_time($part = null, $site = null)
+	public function lead_time($part = null, $site = null)
 	{
 		// send the data if any to the input screen
 		$this->load->model('inv_m');
@@ -1070,7 +1069,7 @@ class Rvl_portal extends MY_Controller
 		$this->load->view('includes/template', $s);
 	}
 	
-	function save_lt()
+	public function save_lt()
 	{
 		$this->load->model('inv_m');
 		// get data from post
@@ -1085,7 +1084,7 @@ class Rvl_portal extends MY_Controller
 		$this->inventory_search(); 
 	}
 	
-	function do_upload()
+	public function do_upload()
 	{
 		/*
 		 * Inventory verifyer
@@ -1207,7 +1206,7 @@ class Rvl_portal extends MY_Controller
 			  		
 			  		// add to inventory array
 			  		$inv[] = array(
-			  				'quantity' =>$quantity,
+			  				'quantity' => $quantity,
 			  				'part_number' =>$partnumber,
 			  				'hd_type' => $hd_type,
 			  				'location' =>$location, 

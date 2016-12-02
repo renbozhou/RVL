@@ -71,15 +71,14 @@ class Login extends CI_Controller
 		if ( $this->form_validation->run() === false ) {
 			$this->signup(); 
 		} else {
-			$this->load->model('user_m'); 
+			$this->load->model('user_m');
 			if ( $this->user_m->create_user() ) {
 				redirect('login/index');
 			} else {
 				$data['main_content'] = 'loginerror';
 				$this->load->view('includes/template', $data);
-			} 
+			}
 		}
-		
 	}
 
 	/*
@@ -116,7 +115,7 @@ class Login extends CI_Controller
 		if ( $this->form_validation->run() && $this->user_m->check_email($email) > 0)
 		{
 			$this->load->library('email');
-			$token = md5(uniqid('',true));
+			$token = do_hash(uniqid('',true),'sha256');
 			$encrypt_datas = json_encode(array('token' => $token, 'email' =>$email));
 		 	$this->cache->file->save($token, $encrypt_datas, 60*15);
 
