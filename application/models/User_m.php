@@ -274,11 +274,21 @@ class User_m extends CI_Model {
         $this->load->library('email');
         foreach ($admins as $email)
 		{
-	        $this->email->from('do_not_reply@lenovo.com', 'RVL Do Not Reply');
+		 	if ( file_exists(APPPATH.'config/email.php') )
+		 	{
+				$this->config->load('email', TRUE); 
+				$econfig = $this->config->item('email', 'email');
+				$this->email->initialize($econfig);
+				list($from_email, $from_name) = [$econfig['smtp_user'], 'RVL Do Not Reply'];
+		 	} else {
+		 		list($from_email, $from_name) = ['do_not_reply@lenovoemc.com', 'RVL Do Not Reply'];
+
+		 	}
+		 	$this->email->from($from_email, $from_name);
 	        $this->email->to($email['email']);
 	        $this->email->subject('New user created on RVL portal: '.$this->input->post('email'));
 	        $this->email->message('New user created on RVL portal: '.$this->input->post('email'));
-	        $this->email->send();
+			$this->email->send();
 		}
 		return $i; 
 	}

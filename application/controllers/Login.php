@@ -134,7 +134,7 @@ class Login extends CI_Controller
 			$this->email->from($from_email, $from_name);
 			$this->email->to($email);
 			$this->email->subject('RVL Portal Password Recovery');
-			$this->email->message('You can click the url to change your password:'.$send_url);
+			$this->email->message('You can click the url to change your password:<br />'.$send_url);
 
 			$this->email->send();
 			
