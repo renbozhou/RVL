@@ -70,5 +70,19 @@ if (!isset($data['statement']))
 ?>
 </div>
 
-<h3>Searched on: <?php print_r($data['statement']);?></h3>
+<h3>Searched on: </h3>
+<?php
+	if( isset($data['statement']) ) 
+	{	
+		foreach ($data['statement'] as $key => $value) 
+		{
+			if( $key== 'site' ) {
+				echo $key.' : '.(int)$value.' <br />';
+			} else {
+				echo $key.' : '.substr($value, 0, 10).'...<br />';
+			}
+			
+		}
+	}
+?>
 </div>

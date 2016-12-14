@@ -428,7 +428,7 @@ $config['sql_inject_filter_chars'] = [
 	'NULL', 'GROUP BY', 'COLLATE', 'exists','convert', 'backup',
 	'show databases', 'show tables', 'create table', 'load_file', 'outfile', 'create', 'exec', 'dbcc', 'declare',
 	'information_schema', 'character_sets',
-	'union all', 'union', 'count',
+	'union all', 'union', 'count', 'group by', 'having', 'version', 'database',
 	'select', 'insert', 'update', 'delete', 'from', 'drop',
 	'concat',
 	'&', "'", "/*", "*", "../", "./", ";", "(", ")", "\\", "[", "]",
