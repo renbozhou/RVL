@@ -109,7 +109,7 @@ class Login extends CI_Controller
 		$this->load->driver('cache');		
 		$this->load->model('user_m');
 		$this->load->library('form_validation');
-		$email =  $this->input->post('email');
+		$email =  $this->input->post('email', true);
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email');
 
 		if ( $this->form_validation->run() && $this->user_m->check_email($email) > 0)
