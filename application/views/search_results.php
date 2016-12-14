@@ -25,27 +25,7 @@ if (!isset($data['statement']))
 ?>
 <input type="submit" value="CSV Download">
 </form>
-<?php
-/*echo form_open('rvl_portal/rma_ftp_upload_csv');
-	$info = array('id' => 'start_date', 'class' => 'dateinput', 'name' => 'start_date');
 
-   	foreach ($data['statement'] as $key => $value)
-		echo '<input type="hidden" name="' .$key .'" value="'. $value .'">'; 
-
-    
-    echo form_label('From: ', 'start_date') ;
-	echo form_input($info);
-	
-	$info = array('id' => 'end_date', 'class' => 'dateinput', 'name' => 'end_date'); 
-	echo form_label('To: ', 'end_date') ; 
-	echo form_input($info); 
-	echo '<br>';
-	$filters = array('-select a field-', 'Receipt Date','Shipped Date' ,'RMA Creation Date');
-	echo form_label('Filter: ', 'filter');
-	echo form_dropdown('filter', $filters);	
-	echo form_submit('submit', 'FTP Upload Report'); 
-	echo form_close(); 	*/
-?>
 <div id="resultmenu">
 <?php 
 	echo form_open('rvl_portal/filtersearch');
@@ -64,17 +44,17 @@ if (!isset($data['statement']))
     echo form_submit('ftp_upload', 'FTP Upload Report'); 
 	echo form_close(); 	
 ?>
-</div><div id="csv">
-<div id="rma_search">
-<form name="input" action="/index.php/rvl_portal/search/" method="post">
-RMA Number or Serial Number: <input type="stext" name="stext">
-<input type="submit" value="Submit">
-</form>
 </div>
+<div id="csv">
+	<div id="rma_search">
+		<form name="input" action="/index.php/rvl_portal/search/" method="post">
+		RMA Number or Serial Number: <input type="stext" name="stext">
+		<input type="submit" value="Submit">
+		</form>
+	</div>
 </div>
 <div class="results" id="resultlist">
-<?php 
-	
+<?php
 	foreach ($results as $r)
 	{
 		echo '<div class="result"><div class="rma_header">';

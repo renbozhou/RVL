@@ -120,11 +120,26 @@ class MY_Input extends CI_Input
 
 		if (isset($array[$index]))
 		{
-			$value = $array[$index];
+			$i=0;
+			$tmpValue = $value = $array[$index];
 			if( $this->inject === true || !empty($this->inject) )
 			{
-				$pattern = '/'.addcslashes(implode('|',config_item('sql_inject_filter_chars')),'./\\*\'').'/i';
-				$value = trim(preg_replace($pattern, '', $value));
+				$sqlFilterChars = implode('|',config_item('sql_inject_filter_chars'));
+				$specificChars = config_item('sql_specific_symbol');
+				$pattern = '/'.addcslashes($sqlFilterChars, $specificChars).'/i';
+				while( $i<3 ) {
+					$value = trim(preg_replace($pattern, '', $value));
+					if( strcmp($tmpValue, $value)==0 ) {
+						break;
+					} else {
+						$value = trim(preg_replace($pattern, '', $value));
+						$tmpValue = $value;
+						$i++;
+					}
+				} 
+				if( $i==3 ) {
+					$value = '';
+				}
 			}
 		}
 		elseif (($count = preg_match_all('/(?:^[^\[]+)|\[[^]]*\]/', $index, $matches)) > 1) // Does the index contain array notation

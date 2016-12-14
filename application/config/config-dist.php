@@ -423,11 +423,18 @@ $config['standardize_newlines'] = FALSE;
 |
 */
 $config['global_xss_filtering'] = TRUE;
-$config['sql_inject_filter_chars'] = array(
-	'show databases', 'show tables', 'create table', 'load_file', 'outfile',
-	'union all','union','select','insert','update','delete','from',
-	"'", "/*", "*", "../", "./", ";"
-);
+$config['sql_inject_filter_chars'] = [
+	'%20', '&quot;', '0x',
+	'NULL', 'GROUP BY', 'COLLATE', 'exists',
+	'show databases', 'show tables', 'create table', 'load_file', 'outfile', 'create', 'exec', 'dbcc', 'declare',
+	'information_schema', 'character_sets',
+	'union all', 'union', 'count',
+	'select', 'insert', 'update', 'delete', 'from',
+	'concat',
+	'&', "'", "/*", "*", "../", "./", ";", "(", ")", "\\", "[", "]",
+	'-', '>', '<', '=', ',', '_', 
+];
+$config['sql_specific_symbol'] = './\\*\'\(\)\;\,\\\[\]';
 
 /*
 |--------------------------------------------------------------------------

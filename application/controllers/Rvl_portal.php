@@ -322,7 +322,8 @@ class Rvl_portal extends MY_Controller
 	public function search()
 	{	// get rma's by the rma_number
 		$this->load->model('rma_m');
-		$data = $this->rma_m->rma_by_rma_or_serial_nbr($this->input->post('stext',true)); //rma_by_rmanumber
+		$number = $this->input->post('stext',true);
+		$data = $this->rma_m->rma_by_rma_or_serial_nbr($number); //rma_by_rmanumber
 		$s['data'] = $data;
 		//search for RVL
 		$s['main_content']='search_results';

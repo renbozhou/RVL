@@ -242,23 +242,27 @@ class Rma_m extends CI_Model {
 	{
 		$ct = array();
 		$site=$this->session->userdata('site_id');
-		$ct['statement'] = array('site' => $site, 'rma_number_like' => $number, 'iomega_sn_like' => $number, 'bare_hdd_sn_like' => $number);
-		$ct['results'] = array();
-        
-        $userId = $this->session->userdata('id');
-                        
-		$q = $this->db->query('select r.*, s.code site_code from rma r join user_sites_vw us on (r.site_id = us.site_id)  join sites s on (r.site_id = s.id) where us.user_id = '.$userId.' and (customer_rma_num like '."'%" .$number ."%' or iomega_sn like "."'%" .$number ."%' or  bare_hdd_sn like "."'%" .$number ."%'  );");
-		foreach($q->result_array() as $r)
-		{
-			$ct['results'][] = array (
-				'id' => $r['id'],
-				'iomega_sn' => $r['iomega_sn'],
-				'bare_hdd_sn' => $r['bare_hdd_sn'],
-				'customer_rma_num' => $r['customer_rma_num'],
-				'company_name' => $r['company_name'],
-				'first_name' => $r['first_name'],
-				'last_name' => $r['last_name']
-			);
+		if( !empty($number) ) {
+			$ct['statement']['site'] = $site;
+			$ct['statement']['rma_number_like'] = $number;
+			$ct['statement']['iomega_sn_like'] = $number;
+			$ct['statement']['bare_hdd_sn_like'] = $number;
+			$ct['results'] = array();
+	        $userId = $this->session->userdata('id');
+	        $whereCondition = 
+			$q = $this->db->query('select r.*, s.code site_code from rma r join user_sites_vw us on (r.site_id = us.site_id)  join sites s on (r.site_id = s.id) where us.user_id = '.$userId.' and (customer_rma_num like '."'%" .$number ."%' or iomega_sn like "."'%" .$number ."%' or  bare_hdd_sn like "."'%" .$number ."%'  );");
+			foreach($q->result_array() as $r)
+			{
+				$ct['results'][] = array (
+					'id' => $r['id'],
+					'iomega_sn' => $r['iomega_sn'],
+					'bare_hdd_sn' => $r['bare_hdd_sn'],
+					'customer_rma_num' => $r['customer_rma_num'],
+					'company_name' => $r['company_name'],
+					'first_name' => $r['first_name'],
+					'last_name' => $r['last_name']
+				);
+			}
 		}
 		return $ct;
 	}
