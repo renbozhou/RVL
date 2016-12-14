@@ -425,11 +425,11 @@ $config['standardize_newlines'] = FALSE;
 $config['global_xss_filtering'] = TRUE;
 $config['sql_inject_filter_chars'] = [
 	'%20', '&quot;', '0x',
-	'NULL', 'GROUP BY', 'COLLATE', 'exists',
+	'NULL', 'GROUP BY', 'COLLATE', 'exists','convert', 'backup',
 	'show databases', 'show tables', 'create table', 'load_file', 'outfile', 'create', 'exec', 'dbcc', 'declare',
 	'information_schema', 'character_sets',
 	'union all', 'union', 'count',
-	'select', 'insert', 'update', 'delete', 'from',
+	'select', 'insert', 'update', 'delete', 'from', 'drop',
 	'concat',
 	'&', "'", "/*", "*", "../", "./", ";", "(", ")", "\\", "[", "]",
 	'-', '>', '<', '=', ',', '_', 
