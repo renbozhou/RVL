@@ -9,6 +9,7 @@ class User_m extends CI_Model {
 	 */
 	public function valid()
 	{
+		@session_start();
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('email', 'Email', 'trim|required|valid_email'); 
 		$this->form_validation->set_rules('password', 'Password', 'trim|required|min_length[5]');
@@ -18,12 +19,28 @@ class User_m extends CI_Model {
 		
 		$em = $this->input->post('email', true);
 		$pw = do_hash($this->input->post('password'),'sha256');
+		$autcode = strtolower($this->input->post('autcode', true));
+		$session_autcode = strtolower(isset($_SESSION['captcha_code'])?$_SESSION['captcha_code']:'');
 
 		$this->db->where('email', $em);
 		$this->db->where('password',$pw);
 		$query = $this->db->get('users');
 
-		if ($query->num_rows() == 1) {
+		//验证码不通过
+		if( $autcode != $session_autcode ) {
+			return false;
+		} else {
+			$captcha_filename = $_SESSION['captcha_filename'];			
+			$captcha_realfilepath = str_replace('\\','/',FCPATH) .'images/captcha/';
+			if( !empty($captcha_filename) && is_really_writable($captcha_realfilepath) 
+				&& file_exists($captcha_realfilepath.$captcha_filename) ) {
+				@unlink($captcha_realfilepath.$captcha_filename);
+			}
+			unset($_SESSION['captcha_filename']);
+			unset($_SESSION['captcha_code']);
+		}
+
+		if ($query->num_rows() == 1 ) {
 			foreach ($query->result() as $row) {
 				$data = [
 					'id' => $row->id,

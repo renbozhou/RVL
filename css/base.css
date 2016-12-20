@@ -291,3 +291,11 @@ input.error
 	background-color: rgb(255, 237, 239);
 	color: black; 
 }
+
+div.clear { clear:both; }
+div.left { float:left; }
+div.right { float:right; }
+div.div_h_30, div.div_h_30 div { height: 30px; }
+div.div_h_30 div { margin-right: 8px;padding-top:1px; }
+div.autcode { width:60px; margin-right: 3px !important; }
+div.autcode input { width:50px; }

@@ -6,7 +6,7 @@
 *	statement => statement
 *
 */
-$results = $data['results']; 
+$results = isset($data['results'])?$data['results']:[]; 
 if (!isset($data['statement']))
 {
 	$data['statement'] = ' ' ; 

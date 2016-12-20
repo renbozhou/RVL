@@ -14,7 +14,6 @@ class Rvl_portal extends MY_Controller
 		parent::__construct(); 
 		date_default_timezone_set("GMT");
 		$this->is_logged_in();
-		
 	}
 	
 	public function index()
@@ -623,14 +622,11 @@ class Rvl_portal extends MY_Controller
 		/// grab rma's depending on user's site 
 		$this->load->model('rma_m');
 		$site=$this->session->userdata('site_id');
-		if ($site != 0)
-			{
-				$data = $this->rma_m->rma_by_site($site);
-			}else 
-			{
-				$data = $this->rma_m->rma_all();
-			}	
-				  
+		if ($site != 0) {
+			$data = $this->rma_m->rma_by_site($site);
+		} else {
+			$data = $this->rma_m->rma_all();
+		}
 		$s['data'] = $data; 
 		$s['main_content'] = 'search_results'; 
 		

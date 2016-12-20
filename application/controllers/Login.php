@@ -11,8 +11,18 @@ class Login extends CI_Controller
 	public function index()
 	{
 		@session_start();
-		$this->session->sess_destroy();
+		if( isset($_SESSION['captcha_filename']) ) 
+		{
+			$captcha_filename = $_SESSION['captcha_filename'];
+			$captcha_realfilepath = str_replace('\\','/',FCPATH) .'images/captcha/';
+			if( !empty($captcha_filename) && is_really_writable($captcha_realfilepath) 
+				&& file_exists($captcha_realfilepath.$captcha_filename) ) {
+				@unlink($captcha_realfilepath.$captcha_filename);
+			}
+		}
+		$cap = $this->_generateValidateCode();
 		$data['main_content'] = 'loginform';
+		$data['captcha_image'] = $cap['image'];
 		$this->load->view('includes/template', $data);
 	}
 
@@ -23,8 +33,8 @@ class Login extends CI_Controller
 	{
 		$this->load->model('user_m');
 		$check = $this->user_m->valid();
-		if ($check) {
-			redirect('rvl_portal/home'); 
+		if ( $check ) {
+			redirect('rvl_portal/home');
 		} else {
 			$this->index();
 		}
@@ -54,7 +64,8 @@ class Login extends CI_Controller
 	public function logout()
 	{
 		$this->session->sess_destroy();
-		$this->index(); 
+		unset($_SESSION);
+		redirect('login/index');
 	}
 
 	/*
@@ -215,5 +226,26 @@ class Login extends CI_Controller
 		$this->load->model('user_m');
 		$query = $this->user_m->change_pw($pw);
 		$this->index();
+	}
+
+	/*
+	 * Desc: 生成验证码
+	 */
+	private function _generateValidateCode()
+	{
+		@session_start();
+		$this->load->helper('captcha');
+		$vals = [];
+		$vals['img_path'] = './images/captcha/';
+		$vals['img_url'] = site_url('images/captcha/');
+		$vals['font_path'] = './system/fonts/texb.ttf';
+		$vals['expiration'] = 7200;
+		$vals['word_length'] = 5;
+		$vals['img_id'] = 'captcha_id';
+
+		$cap = create_captcha($vals);		
+		$_SESSION['captcha_code'] = $cap['word'];
+		$_SESSION['captcha_filename'] = $cap['filename'];
+		return $cap;
 	}
 }
