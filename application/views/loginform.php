@@ -26,7 +26,7 @@ $(document).ready(function(){
 				<?= form_input('autcode', '', 'required').'&nbsp;&nbsp;'; ?>
 			</div>
 			<div class='left'><?=$captcha_image.''; ?></div>
-			<div class='left'><a href="<?=site_url('login/index')?>">刷新验证码</a></div>
+			<div class='left'><a href="<?=site_url('login/index')?>">Refresh</a></div>
 			<div class="clear"></div>
 		</div>
 		<br />
